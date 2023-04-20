@@ -74,12 +74,12 @@ def _main():
     #
     # With augmentation
     hparams = {
-        'device': 'cpu',
-        # 'device': 'cuda:0',
+        # 'device': 'cpu',
+        'device': 'cuda:0',
         'num_layers': 2,
         'batch_size': 4096,
         'lr': 0.01,
-        'decay': 0.8,
+        'decay': 0.9,
         'epochs': 20,
         'in_dim': 1,
         'd_model': 64,

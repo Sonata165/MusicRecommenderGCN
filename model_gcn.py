@@ -155,7 +155,10 @@ class GraphConv(nn.Module):
                 elif self.attn == True and self.augment == True:
                     graph.srcdata['W'] = self.W(graph.srcdata['h'])
                     graph.dstdata['W'] = self.W(feat_dst)
-                    graph.update_all(message_func=self.message_attn_aug, reduce_func=fn.sum(msg='m', out='h'))
+                    if self.training:
+                        graph.update_all(message_func=self.message_attn_aug, reduce_func=fn.sum(msg='m', out='h'))
+                    else:
+                        graph.update_all(message_func=self.message_attn, reduce_func=fn.sum(msg='m', out='h'))
             rst = graph.dstdata['h']
             if weight is not None:
                 rst = th.matmul(rst, weight)
@@ -204,7 +207,7 @@ class GraphConv(nn.Module):
         attn = F.softmax(attn, dim=0)
 
         message = edges.src['h'] * (edges.data['_edge_weight'].unsqueeze(1) + attn +
-                                    torch.normal(mean=0., std=0.1, size=edges.src['h'].shape, device='cpu'))
+                                    torch.normal(mean=0., std=0.1, size=edges.src['h'].shape, device='cuda:0'))
         return {'m': message}
 
     def augment_message(self, msg):
