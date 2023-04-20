@@ -8,7 +8,7 @@ Task: edge regression
 Last.fm -2k dataset: https://grouplens.org/datasets/hetrec-2011/
 - 1,892 users
 - 17,632 artists
-- 92,834 user-artist playing event count
+- 92,834 pairs of user-artist playing event count
 (Number of edges is too large for full batch training. Stochastic subgraph sampling is adopted.)
 
 ## Model
